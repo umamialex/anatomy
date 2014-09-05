@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Anatomy.io by suitupalex</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Anatomy.io</h1>
+          <h2>Do you like starting from an empty CentOS install and turning it into a full-fledge Node.js server, but don&#39;t want to type out all the commands and write pages of boilerplate? Or are you just starting out with Node.js (maybe even Linux) and have no clue where to begin? Anatomy.io is for you.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/suitupalex/anatomy/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/suitupalex/anatomy/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/suitupalex/anatomy" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="anatomyio" class="anchor" href="#anatomyio"><span class="octicon octicon-link"></span></a>Anatomy.io</h1>
+
+<p>Do you like starting from an empty CentOS install and turning it into a full-fledge Node.js server, but don't want to type out all the commands and write pages of boilerplate? Or are you just starting out with Node.js (maybe even Linux) and have no clue where to begin?</p>
+
+<p><strong>Anatomy.io is for you</strong></p>
+
+<h2>
+<a name="installation-and-basic-usage" class="anchor" href="#installation-and-basic-usage"><span class="octicon octicon-link"></span></a>Installation and Basic Usage</h2>
+
+<p>To install Anatomy.io, simply run:</p>
+
+<pre><code>sudo yum -y install git 
+git clone https://github.com/suitupalex/anatomy.git
+</code></pre>
+
+<p>To run through the default server setup, just do:</p>
+
+<pre><code>cd anatomy
+sh reproduce.sh
+</code></pre>
+
+<h2>
+<a name="what-does-anatomyio-do" class="anchor" href="#what-does-anatomyio-do"><span class="octicon octicon-link"></span></a>What does Anatomy.io do?</h2>
+
+<h3>
+<a name="simple-server-installation" class="anchor" href="#simple-server-installation"><span class="octicon octicon-link"></span></a>Simple Server Installation</h3>
+
+<p><strong>Note:</strong> <em>The Anatomy.io server installation is currently only available for RHEL (i.e. Red Hat, CentOS, and Fedora). If you use a different flavor of Linux, why don't you fork the project and contribute!</em></p>
+
+<h4>
+<a name="automated-install" class="anchor" href="#automated-install"><span class="octicon octicon-link"></span></a>Automated Install</h4>
+
+<p>Anatomy.io is a simple installation tool that takes an empty CentOS server and will automatically install all the tools you need to have a bare bones Node.js server going. The install is fully customizable and can help you quickly spin up multiple production web apps, quickly on-board team members, or even just give you a clean workspace to test projects.</p>
+
+<p>With every command in the installation process, Anatomy.io will check for any errors and will ask for verification before continuing to the next step.</p>
+
+<h4>
+<a name="step-by-step-install" class="anchor" href="#step-by-step-install"><span class="octicon octicon-link"></span></a>Step-by-step Install</h4>
+
+<p>You can also choose to manually verify each step if you'd like to keep tabs on what's happening under the hood. Newcomers to Linux and Node.js can use this method as learning tool for properly configuring their servers.</p>
+
+<h3>
+<a name="application-framework" class="anchor" href="#application-framework"><span class="octicon octicon-link"></span></a>Application Framework</h3>
+
+<p>Anatomy.io also has a very opinionated yet open-ended framework for Node.js projects. There are two main goals for the Anatomy.io framework.</p>
+
+<h4>
+<a name="minimize-boilerplate-but-keeping-it-basic" class="anchor" href="#minimize-boilerplate-but-keeping-it-basic"><span class="octicon octicon-link"></span></a>Minimize boilerplate but keeping it basic.</h4>
+
+<p>Node.js projects generally require quite a bit of boilerplate to get a basic web application going. Anatomy.io takes care of the tedious base code and package installations for you so you can get into the fun stuff.</p>
+
+<p>But you're probably wondering why not just use something like <a href="http://meteor.com">Meteor.js</a>? Meteor.js is a fantastic solution, but we found it to be too high level to do anything extremely complicated. On top of that, we found that people who started their Node.js experience on Meteor.js did not know how to use vanilla Node.js. Meteor.js does a fine job of adding an abstraction layer, but there is just way too much stuff inbetween the programmer and Node.js.</p>
+
+<p>Anatomy.io does offer a very opinionated view on what technologies to use with a typical Node.js web app. But all the code is out in the open and is implemented as its most basic form. We give you the option to remove and add anything you wish. In fact, if all you want to do is quickly setup a server, <em>you don't have to use our framework at all.</em></p>
+
+<h4>
+<a name="provide-a-new-metaphor-for-structuring-web-apps" class="anchor" href="#provide-a-new-metaphor-for-structuring-web-apps"><span class="octicon octicon-link"></span></a>Provide a new metaphor for structuring web apps.</h4>
+
+<p>Anatomy.io also provides a strong opinion about structuring your web apps. Every good application programmer knows about the Model-View-Controller (MVC) paradigm. But it can take a few blog posts, a YouTube lecture or two, and then hours of trial-and-error to figure out what the actually concept is trying to achieve.</p>
+
+<p>On top of that, when programmers create their directory hierarchy, they use boring, nondescript terms like <strong>views</strong>, <strong>lib</strong>, <strong>models</strong>, <strong>public</strong>, and <strong>static</strong>. They call their files more vague things like <strong>app.js</strong>, <strong>index.html</strong>, <strong>stylesheet.css</strong>, <strong>utils.js</strong>.</p>
+
+<p>We can be more creative than that and come up with something more descriptive and more relatable. Maybe come up with something even non-programmers can understand. Why not use something we all know and love as a metaphor, <strong>the human body.</strong></p>
+
+<h2>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
+
+<h2>
+<a name="structure" class="anchor" href="#structure"><span class="octicon octicon-link"></span></a>Structure</h2>
+
+<h3>
+<a name="reproducesh" class="anchor" href="#reproducesh"><span class="octicon octicon-link"></span></a>reproduce.sh</h3>
+
+<h3>
+<a name="gonads" class="anchor" href="#gonads"><span class="octicon octicon-link"></span></a>gonads</h3>
+
+<h4>
+<a name="gametes" class="anchor" href="#gametes"><span class="octicon octicon-link"></span></a>gametes</h4>
+
+<h4>
+<a name="chromosomes" class="anchor" href="#chromosomes"><span class="octicon octicon-link"></span></a>chromosomes</h4>
+
+<h4>
+<a name="hox-genes" class="anchor" href="#hox-genes"><span class="octicon octicon-link"></span></a>hox-genes</h4>
+
+<h3>
+<a name="skeleton" class="anchor" href="#skeleton"><span class="octicon octicon-link"></span></a>skeleton</h3>
+
+<h4>
+<a name="spinejade" class="anchor" href="#spinejade"><span class="octicon octicon-link"></span></a>spine.jade</h4>
+
+<h3>
+<a name="muscle" class="anchor" href="#muscle"><span class="octicon octicon-link"></span></a>muscle</h3>
+
+<h4>
+<a name="skeletaljs" class="anchor" href="#skeletaljs"><span class="octicon octicon-link"></span></a>skeletal.js</h4>
+
+<h4>
+<a name="visceral" class="anchor" href="#visceral"><span class="octicon octicon-link"></span></a>visceral</h4>
+
+<h3>
+<a name="skin" class="anchor" href="#skin"><span class="octicon octicon-link"></span></a>skin</h3>
+
+<h4>
+<a name="epidermissass" class="anchor" href="#epidermissass"><span class="octicon octicon-link"></span></a>epidermis.sass</h4>
+
+<h4>
+<a name="dermis" class="anchor" href="#dermis"><span class="octicon octicon-link"></span></a>dermis</h4>
+
+<h3>
+<a name="voice" class="anchor" href="#voice"><span class="octicon octicon-link"></span></a>voice</h3>
+
+<h3>
+<a name="brain" class="anchor" href="#brain"><span class="octicon octicon-link"></span></a>brain</h3>
+
+<h4>
+<a name="cerebellumjs" class="anchor" href="#cerebellumjs"><span class="octicon octicon-link"></span></a>cerebellum.js</h4>
+        </section>
+
+        <footer>
+          Anatomy.io is maintained by <a href="https://github.com/suitupalex">suitupalex</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
