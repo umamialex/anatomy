@@ -1,0 +1,35 @@
+#!/bin/sh
+
+##################################33###
+#                                     #
+#  The main hox gene for Anatomy.io.  #
+#                                     #
+#######################################
+
+# List of essential packages that should be installed.
+ESSENTIALS=(wget vim openssl-devel ruby rubygems man htop gcc-c++)
+
+# List of global node modules.
+NODE_GLOBAL_MODULES=(anatomy jshint pm2 gulp uglify-js yuidocjs)
+
+# List of Vim Pathogen-compatible plugins.
+# Simple use the format username/repo as per the plugin's GitHub.
+VIM_PLUGINS=(othree/html5.vim hail2u/vim-css3-syntax digitaltoad/vim-jade shutnik/jshint2.vim)
+
+###########################################
+#                                         #
+#         !! DO NOT EDIT BELOW !!         #
+#  Edit the appropriate hox gene instead. #
+#                                         #
+###########################################
+
+# This is the config for an automated server installation.
+. ./gonads/hox-genes/server.hox
+
+# This is the config for an automated framework installation.
+if [ -d './gonads/hox-genes/framework.hox' ]; then
+    . ./gonads/hox-genes/framework.hox
+    FRAMEWORK_CONFIG=1
+else
+    FRAMEWORK_CONFIG=0
+fi

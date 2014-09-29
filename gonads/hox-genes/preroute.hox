@@ -1,0 +1,11 @@
+eout "{glob} loading preroute.rules"
+
+# load TOS prerouting function
+# do not remove or TOS vars will not function
+tospreroute
+
+# place your custom routing rules below
+
+# If you don't wish to serve over SSL, uncomment the next line and comment out the line below that.
+# $IPT -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+$IPT -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080

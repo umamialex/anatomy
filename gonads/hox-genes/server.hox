@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# This is the original config for an automated server installation.
+
+AUTO_UPDATES=1                   # Fully update all packages.
+AUTO_DEVELOPMENT_TOOLS=1         # Group install Development Tools.
+AUTO_ESSENTIALS=1                # Install essential packages.
+AUTO_BASHRC=1                    # Install custom .bashrc settings.
+AUTO_VIM=1                       # Install Vim plugins and vim-pathogen.
+AUTO_NODE=1                      # Install Node.js.
+AUTO_NODE_GLOBAL_MODULES=1       # Install Node.js global modules.
+AUTO_MONGODB=0                   # Install MongoDB.
+AUTO_REDIS=1                     # Install Redis.
+AUTO_POSTGRESQL=1                # Install PostgreSQL.
+AUTO_SASS=1                      # Install SASS gem.
+AUTO_APF=1                       # Install APF.
+AUTO_APF_CONFIGURE=1             # Configure and install APF.
+AUTO_ANATOMY_FRAMEWORK=1         # Initialize a Node.js app with the Anatomy framework.
