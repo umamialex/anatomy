@@ -830,7 +830,7 @@ if [ $auto -eq 0 ]; then
       autoHoxAppend "AUTO_CSS_PREPROCESSOR=$AUTO_CSS_PREPROCESSOR # Set a CSS preprocessor."
       autoHoxAppend "AUTO_FRONT_END_FRAMEWORK=$AUTO_FRONT_END_FRAMEWORK # Set a front-end framework."
       autoHoxAppend "AUTO_DATABASE=$AUTO_DATABASE # Set a database."
-      autoHoxAppend "AUTO_CACHE_DATABASE=$AUTO_CACHE # Set a caching database."
+      autoHoxAppend "AUTO_CACHE_DATABASE=$AUTO_CACHE_DATABASE # Set a caching database."
       autoHoxAppend "AUTO_ORM=$AUTO_ORM # Set an ORM."
       autoHoxAppend "AUTO_BUILD_TOOL=$AUTO_BUILD_TOOL # Set a build tool."
       autoHoxAppend "AUTO_DAEMONIZER=$AUTO_DAEMONIZER # Set a daemonizer."
