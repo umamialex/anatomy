@@ -587,7 +587,7 @@ case "$AUTO_LIBRARY" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What animation library would you like to use?' 'gsap' 'jqueryui'
+  askOptions 'What animation engine would you like to use?' 'gsap' 'jqueryui'
   AUTO_ANIMATION_ENGINE="$LAST_ANSWER"
 fi
 
@@ -786,26 +786,27 @@ cd $origin
 if [ $auto -eq 0 ]; then
   state info 'Finished manual install with the following configuration:'
   echo
-  state info "Folders:            $(binaryWord $AUTO_FOLDERS)"
-  state info "Text Editor:          $(greenify $AUTO_EDITOR)"
-  state info "JavaScript Preprocessor:    $(greenify $AUTO_JAVASCRIPT_PREPROCESSOR)"
-  state info "Templating Language:      $(greenify $AUTO_TEMPLATE_LANGUAGE)"
-  state info "CSS Preprocessor:         $(greenify $AUTO_CSS_PREPROCESSOR)"
-  state info "Front-end Framework:      $(greenify $AUTO_FRONT_END_FRAMEWORK)"
-  state info "Database:             $(greenify $AUTO_DATABASE)"
-  state info "Cache Database:         $(greenify $AUTO_CACHE_DATABASE)"
-  state info "ORM:              $(greenify $AUTO_ORM)"
-  state info "Build Tool:           $(greenify $AUTO_BUILD_TOOL)"
-  state info "Daemonizer:           $(greenify $AUTO_DAEMONIZER)"
-  state info "Back-end Framework:       $(greenify $AUTO_BACK_END_FRAMEWORK)"
-  state info "Websocket Engine:         $(greenify $AUTO_WEBSOCKET_ENGINE)"
-  state info "Animation Engine:         $(greenify $AUTO_ANIMATION_ENGINE)"
-  state info "Bundler:            $(greenify $AUTO_BUNDLER)"
-  state info "CSS Framework:          $(greenify $AUTO_CSS_FRAMEWORK)"
-  state info "Passport.js:          $(binaryWord $AUTO_PASSPORT)"
-  state info "Sticky Sessions:        $(binaryWord $AUTO_STICKY_SESSION)"
-  state info "Boilerplate:          $(binaryWord $AUTO_BOILERPLATE)"
-  state info "Colors:             $(binaryWord $AUTO_COLORS)"
+  state info "Folders:                      $(binaryWord $AUTO_FOLDERS)"
+  state info "Text Editor:                  $(greenify $AUTO_EDITOR)"
+  state info "JavaScript Preprocessor:      $(greenify $AUTO_JAVASCRIPT_PREPROCESSOR)"
+  state info "Templating Language:          $(greenify $AUTO_TEMPLATE_LANGUAGE)"
+  state info "CSS Preprocessor:             $(greenify $AUTO_CSS_PREPROCESSOR)"
+  state info "Front-end Framework:          $(greenify $AUTO_FRONT_END_FRAMEWORK)"
+  state info "Database:                     $(greenify $AUTO_DATABASE)"
+  state info "Cache Database:               $(greenify $AUTO_CACHE_DATABASE)"
+  state info "ORM:                          $(greenify $AUTO_ORM)"
+  state info "Build Tool:                   $(greenify $AUTO_BUILD_TOOL)"
+  state info "Daemonizer:                   $(greenify $AUTO_DAEMONIZER)"
+  state info "Back-end Framework:           $(greenify $AUTO_BACK_END_FRAMEWORK)"
+  state info "Websocket Engine:             $(greenify $AUTO_WEBSOCKET_ENGINE)"
+  state info "JavaScript Library:           $(greenify $AUTO_LIBRARY)"
+  state info "Animation Engine:             $(greenify $AUTO_ANIMATION_ENGINE)"
+  state info "Bundler:                      $(greenify $AUTO_BUNDLER)"
+  state info "CSS Framework:                $(greenify $AUTO_CSS_FRAMEWORK)"
+  state info "Passport.js:                  $(binaryWord $AUTO_PASSPORT)"
+  state info "Sticky Sessions:              $(binaryWord $AUTO_STICKY_SESSION)"
+  state info "Boilerplate:                  $(binaryWord $AUTO_BOILERPLATE)"
+  state info "Colors:                       $(binaryWord $AUTO_COLORS)"
   echo
   if ask 'Would you like to save this configuration as generator.hox?'; then
     cd $origin/gonads/hox-genes
@@ -835,6 +836,7 @@ if [ $auto -eq 0 ]; then
       autoHoxAppend "AUTO_DAEMONIZER=$AUTO_DAEMONIZER # Set a daemonizer."
       autoHoxAppend "AUTO_BACK_END_FRAMEWORK=$AUTO_BACK_END_FRAMEWORK # Set a back-end framework."
       autoHoxAppend "AUTO_WEBSOCKET_ENGINE=$AUTO_WEBSOCKET_ENGINE # Set a websocket engine."
+      autoHoxAppend "AUTO_LIBRARY=$AUTO_LIBRARY # Set a JavaScript library."
       autoHoxAppend "AUTO_ANIMATION_ENGINE=$AUTO_ANIMATION_ENGINE # Set an animation engine."
       autoHoxAppend "AUTO_BUNDLER=$AUTO_BUNDLER # Set an animation engine."
       autoHoxAppend "AUTO_CSS_FRAMEWORK=$AUTO_CSS_FRAMEWORK # Set a CSS framework."
