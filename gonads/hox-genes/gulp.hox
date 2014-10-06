@@ -1,0 +1,45 @@
+// vi:syntax=javascript
+
+var gulp = require('gulp');
+var watch = require('gulp-watch');
+var shell = require('gulp-shell');
+var gutil = require('gulp-util');
+var source = require('vinyl-source-stream');
+var browserify = require('browserify');
+var plumber = require('gulp-plumber');
+
+function browserifyJs() {
+  return browserify('./muscle/skeletal.js').bundle()
+       .on('error', function(error) {
+         gutil.beep();
+         gutil.log(error.message);
+         this.end();
+       })
+       .pipe(source('skeletal.bundle.js'))
+       .pipe(gulp.dest('./muscle'));
+}
+
+gulp.task('default', function() {
+  watch('./skin/*.sass').pipe(shell('sass ./skin/<%= filename(file.path) %> ./skin/dermis/<%= css(filename(file.path)) %>', {
+    templateData: {
+      filename: function(path) {
+        var segments = path.split('/');
+        return segments[segments.length - 1];
+      },
+      css: function(filename) {
+        var segments = filename.split('.');
+        segments.pop();
+        segments.push('css');
+        return segments.join('.');
+      }
+    }
+  }));
+
+  gulp.watch([ './muscle/**/*.js', '!./muscle/skeletal.bundle.js' ], [ 'browserify-js' ]);
+
+  browserifyJs();
+});
+
+gulp.task('browserify-js', function() {
+  return browserifyJs();
+});

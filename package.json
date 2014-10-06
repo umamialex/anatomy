@@ -1,0 +1,26 @@
+{
+  "name": "anatomy",
+  "version": "0.0.4",
+  "description": "An opinionated yet open-ended framework for Node.js projects based on the human body.",
+  "main": "anatomy-cli.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suitupalex/anatomy/tree/cli"
+  },
+  "keywords": [
+    "anatomy",
+    "framework",
+    "mvc",
+    "boilerplate"
+  ],
+  "bin": {
+    "anatomy": "anatomy.sh"
+  },
+  "author": "Alexander Martin",
+  "license": "MIT"
+}

@@ -1,0 +1,43 @@
+// vi:syntax=javascript
+
+var CEREBELLUM = require('../../brain/cerebellum.js');
+var self;
+
+module.exports = self = {
+  namespaceIds: [
+    'anatomy1', 'anatomy2'
+  ],
+  events: {
+    'connection': function(socket) {
+      CEREBELLUM.log.print(socket.id, 'socketio connect');
+    },
+    'disconnect': function(socket) {
+      CEREBELLUM.log.print(socket.id, 'socketio disconnect');
+    }
+  },
+  io: null,
+  configure: function(io, namespaces) {
+    var self = this;
+
+    this.io = io;
+
+    for (var i = 0; i < this.namespaceIds.length; i ++) {
+      var namespaceId = this.namespaceIds[i];
+      var namespace = '/' + namespaceId;
+      namespaces[namespace] = io.of(namespace);
+      namespaces[namespace].on('connection', function(socket) {
+        self.events.connection(socket);
+
+        for (var event in self.events) {
+          if (event !== 'connection') {
+            (function(socket, event, callback) {
+              socket.on(event, function(data, next) {
+                callback(socket, data, namespaces[namespace], next);
+              });
+            })(socket, event, self.events[event]);
+          }
+        }
+      });
+    }
+  }
+};

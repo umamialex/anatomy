@@ -1,0 +1,69 @@
+// vi:syntax=javascript
+
+var CEREBELLUM = require('../../brain/cerebellum.js');
+var self;
+
+module.exports = self = {
+  engine: 'jade',
+  port: 8080,
+  routes: {
+    '/': function(request, response) {
+      response.render('spine');
+    }
+  },
+  passport: null,
+  configure: function(parameters) {
+    var app = parameters.app;
+    var express = parameters.express;
+    var cookieParser = require('cookie-parser');
+    var bodyParser = require('body-parser');
+    var session = require('express-session');
+    var passport = this.passport = parameters.passport;
+
+    app.locals.basedir = CEREBELLUM.directories.root;
+
+    app.use('/skin', express.static(CEREBELLUM.directories.skin));
+    app.use('/muscle', express.static(CEREBELLUM.directories.muscle));
+    app.use('/voice', express.static(CEREBELLUM.directories.voice));
+
+    app.set('views', CEREBELLUM.directories.skeleton);
+    app.set('view engine', this.engine);
+
+    app.use(cookieParser());
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+
+    app.use(session({
+      secret: 'thisismysecret',
+      resave: true,
+      saveUninitialized: true
+    }));
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    for (var route in this.routes) {
+      if (typeof this.routes[route] === 'function') {
+        app.all(route, this.routes[route]);
+      } else {
+        for (var type in this.routes[route]) {
+          var middleware, execute;
+          if (typeof this.routes[route][type] === 'function') {
+            middleware = function(request, response, next) { next(); };
+            execute = this.routes[route][type];
+          } else {
+            middleware = this.routes[route][type].middleware;
+            execute = this.routes[route][type].execute;
+          }
+          app[type](route, middleware, execute);
+        }
+      }
+    }
+  },
+  isLoggedIn: function(request, response, next) {
+    if (request.isAuthenticated()) {
+      return next();
+    }
+
+    // Redirect to login page.
+  }
+};

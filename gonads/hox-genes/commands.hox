@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# This is the standard config when running anatomy in a project without a command hox.
+
+COMMANDS_EDITOR='vim'            # Text Editor
+COMMANDS_BUILDER='gulp'          # Build Tool
+COMMANDS_DAEMONIZER='pm2'        # Daemonizer
+COMMANDS_BUNDLER='browserify'    # Bundler
+
+COMMANDS_SKELETON_EXT='jade'     # Template Language
+COMMANDS_SKIN_EXT='sass'         # CSS Preprocesser
+COMMANDS_MUSCLE_EXT='js'         # Client-side Language
+COMMANDS_BRAIN_EXT='js'          # Server-side Language

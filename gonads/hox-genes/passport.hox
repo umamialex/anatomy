@@ -1,0 +1,49 @@
+// vi:syntax=javascript
+
+var CEREBELLUM = require('../../brain/cerebellum.js');
+
+module.exports = {
+  configure: function(parameters) {
+    var LocalStrategy = require('passport-local').Strategy;
+    var passport = parameters.passport;
+    var bookshelf = parameters.bookshelf;
+
+    var User = parameters.User;
+
+    passport.serializeUser(function(user, done) {
+      done(null, user.id);
+    });
+
+    passport.deserializeUser(function(id, done) {
+      new User({ id: id }).fetch().then(function(user) {
+        done(null, user);
+      });
+    });
+
+    passport.use('local-signup', new LocalStrategy({
+      usernameField: 'email',
+      passwordField: 'password',
+      passingReqToCallback: true
+    }, function(request, email, password, done) {
+      new User({ email: email }).fetch().then(function(user) {
+        if (user === null) {
+          var newUser = new User({ email: email });
+            newUser.set({
+              password: newUser.hashPassword(password),
+              name: request.body.name
+            })
+            .save(null, { method: 'insert' })
+            .then(function(user) {
+              // Do something with the user.
+            });
+        } else {
+          if (user.validatePassword(password)) {
+            return done(null, user);
+          } else {
+            return done(null, false);
+          }
+        }
+      });
+    }));
+  }
+};

@@ -1,0 +1,8 @@
+// vi:syntax=javascript
+
+module.exports = {
+  knex: require('./knex.hox'),
+  express: require('./express.hox'),
+  socketio: require('./socketio.hox'),
+  passport: require('./passport.hox')
+};
