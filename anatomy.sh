@@ -497,9 +497,9 @@ fi
 
 case "$AUTO_CACHE_DATABASE" in
   redis)
-    state info 'Installing Redis module.'
-    npm install redis
-    check $? 'install' 'installed' 'Redis module'
+    state info 'Installing Redis and hiredis modules.'
+    npm install redis hiredis
+    check $? 'install' 'installed' 'Redis and hiredis modules'
   ;;
 esac
 
@@ -569,7 +569,25 @@ case "$AUTO_WEBSOCKET_ENGINE" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What animation engine would you like to use?' 'gsap' 'jqueryui'
+  askOptions 'What JavaScript library would you like to use?' 'jquery' 'zepto'
+  AUTO_LIBRARY="$LAST_ANSWER"
+fi
+
+case "$AUTO_LIBRARY" in
+  jquery)
+    state info 'Installing jquery module.'
+    npm install jquery
+    check $? 'install' 'installed' 'jQuery module'
+  ;;
+  zepto)
+    state info 'Installing browserify-zepto module.'
+    npm install browserify-zepto
+    check $? 'install' 'installed' 'browserify-zepto'
+  ;;
+esac
+
+if [ $auto -eq 0 ]; then
+  askOptions 'What animation library would you like to use?' 'gsap' 'jqueryui'
   AUTO_ANIMATION_ENGINE="$LAST_ANSWER"
 fi
 
@@ -804,26 +822,26 @@ if [ $auto -eq 0 ]; then
       autoHoxAppend
       autoHoxAppend '# This is a config for an automated installation generated from a previous manual installation.'
       autoHoxAppend
-      autoHoxAppend "AUTO_FOLDERS=$AUTO_FOLDERS                     # Scaffold out a basic anatomy app."
-      autoHoxAppend "AUTO_EDITOR=$AUTO_EDITOR                     # Set text editor."
-      autoHoxAppend "AUTO_JAVASCRIPT_PREPROCESSOR=$AUTO_JAVASCRIPT_PREPROCESSOR     # Set a JavaScript preprocessor."
-      autoHoxAppend "AUTO_TEMPLATE_LANGUAGE=$AUTO_TEMPLATE_LANGUAGE           # Set a templating language."
-      autoHoxAppend "AUTO_CSS_PREPROCESSOR=$AUTO_CSS_PREPROCESSOR           # Set a CSS preprocessor."
-      autoHoxAppend "AUTO_FRONT_END_FRAMEWORK=$AUTO_FRONT_END_FRAMEWORK         # Set a front-end framework."
-      autoHoxAppend "AUTO_DATABASE=$AUTO_DATABASE                   # Set a database."
-      autoHoxAppend "AUTO_CACHE_DATABASE=$AUTO_CACHE                  # Set a caching database."
-      autoHoxAppend "AUTO_ORM=$AUTO_ORM                         # Set an ORM."
-      autoHoxAppend "AUTO_BUILD_TOOL=$AUTO_BUILD_TOOL                 # Set a build tool."
-      autoHoxAppend "AUTO_DAEMONIZER=$AUTO_DAEMONIZER                 # Set a daemonizer."
-      autoHoxAppend "AUTO_BACK_END_FRAMEWORK=$AUTO_BACK_END_FRAMEWORK         # Set a back-end framework."
-      autoHoxAppend "AUTO_WEBSOCKET_ENGINE=$AUTO_WEBSOCKET_ENGINE           # Set a websocket engine."
-      autoHoxAppend "AUTO_ANIMATION_ENGINE=$AUTO_ANIMATION_ENGINE           # Set an animation engine."
-      autoHoxAppend "AUTO_BUNDLER=$AUTO_BUNDLER                     # Set an animation engine."
-      autoHoxAppend "AUTO_CSS_FRAMEWORK=$AUTO_CSS_FRAMEWORK               # Set a CSS framework."
-      autoHoxAppend "AUTO_PASSPORT=$AUTO_PASSPORT                   # Use Passport.js for authentication."
-      autoHoxAppend "AUTO_STICKY_SESSION=$AUTO_STICKY_SESSION             # Use sticky sessions."
-      autoHoxAppend "AUTO_BOILERPLATE=$AUTO_BOILERPLATE                 # Copy boilerplate code."
-      autoHoxAppend "AUTO_COLORS=$AUTO_COLORS                     # Use colors logging module."
+      autoHoxAppend "AUTO_FOLDERS=$AUTO_FOLDERS # Scaffold out a basic anatomy app."
+      autoHoxAppend "AUTO_EDITOR=$AUTO_EDITOR # Set text editor."
+      autoHoxAppend "AUTO_JAVASCRIPT_PREPROCESSOR=$AUTO_JAVASCRIPT_PREPROCESSOR # Set a JavaScript preprocessor."
+      autoHoxAppend "AUTO_TEMPLATE_LANGUAGE=$AUTO_TEMPLATE_LANGUAGE # Set a templating language."
+      autoHoxAppend "AUTO_CSS_PREPROCESSOR=$AUTO_CSS_PREPROCESSOR # Set a CSS preprocessor."
+      autoHoxAppend "AUTO_FRONT_END_FRAMEWORK=$AUTO_FRONT_END_FRAMEWORK # Set a front-end framework."
+      autoHoxAppend "AUTO_DATABASE=$AUTO_DATABASE # Set a database."
+      autoHoxAppend "AUTO_CACHE_DATABASE=$AUTO_CACHE # Set a caching database."
+      autoHoxAppend "AUTO_ORM=$AUTO_ORM # Set an ORM."
+      autoHoxAppend "AUTO_BUILD_TOOL=$AUTO_BUILD_TOOL # Set a build tool."
+      autoHoxAppend "AUTO_DAEMONIZER=$AUTO_DAEMONIZER # Set a daemonizer."
+      autoHoxAppend "AUTO_BACK_END_FRAMEWORK=$AUTO_BACK_END_FRAMEWORK # Set a back-end framework."
+      autoHoxAppend "AUTO_WEBSOCKET_ENGINE=$AUTO_WEBSOCKET_ENGINE # Set a websocket engine."
+      autoHoxAppend "AUTO_ANIMATION_ENGINE=$AUTO_ANIMATION_ENGINE # Set an animation engine."
+      autoHoxAppend "AUTO_BUNDLER=$AUTO_BUNDLER # Set an animation engine."
+      autoHoxAppend "AUTO_CSS_FRAMEWORK=$AUTO_CSS_FRAMEWORK # Set a CSS framework."
+      autoHoxAppend "AUTO_PASSPORT=$AUTO_PASSPORT # Use Passport.js for authentication."
+      autoHoxAppend "AUTO_STICKY_SESSION=$AUTO_STICKY_SESSION # Use sticky sessions."
+      autoHoxAppend "AUTO_BOILERPLATE=$AUTO_BOILERPLATE # Copy boilerplate code."
+      autoHoxAppend "AUTO_COLORS=$AUTO_COLORS # Use colors logging module."
     }
     check $? 'save' 'saved' 'current configration as generator.hox'
   else
