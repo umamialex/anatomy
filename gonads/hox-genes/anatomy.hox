@@ -10,7 +10,7 @@
 ESSENTIALS=(wget vim openssl-devel ruby rubygems man htop gcc-c++)
 
 # List of global node modules.
-NODE_GLOBAL_MODULES=(anatomy jshint pm2 gulp uglify-js yuidocjs)
+NODE_GLOBAL_MODULES=(anatomy jshint pm2 gulp uglify-js yuidocjs n)
 
 # List of Vim Pathogen-compatible plugins.
 # Simple use the format username/repo as per the plugin's GitHub.
