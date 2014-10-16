@@ -1,6 +1,6 @@
 {
   "name": "anatomy",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "An opinionated yet open-ended framework for Node.js projects based on the human body.",
   "main": "anatomy-cli.js",
   "dependencies": {},

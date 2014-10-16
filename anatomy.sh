@@ -263,36 +263,110 @@ else
       fi
     ;;
     build)
-      $COMMANDS_BUILDER $2
+      figPrepend=''
+      if [ "$COMMANDS_DAEMONIZER" == 'fig' ]; then
+        figPrepend="fig run $COMMANDS_DOCKER_SERVICE"
+      fi
+      if [ "$2" == '' ]; then
+        $figPrepend $COMMANDS_BUILDER build
+      else
+        $figPrepend $COMMANDS_BUILDER $2
+      fi
     ;;
     watch)
-      $COMMANDS_BUILDER watch
+      figPrepend=''
+      if [ "$COMMANDS_DAEMONIZER" == 'fig' ]; then
+        figPrepend="fig run $COMMANDS_DOCKER_SERVICE"
+      fi
+      if [ "$2" == 'only' ]; then
+        $figPrepend $COMMANDS_BUILDER watch
+      else
+        $figPrepend $COMMANDS_BUILDER
+      fi
     ;;
     start)
       case "$2" in
         memory)
-          $COMMANDS_DAEMONIZER start $origin/brain/stem.js --name "$originDirName"
-          $COMMANDS_DAEMONIZER logs $originDirName
+          case "$COMMANDS_DAEMONIZER" in
+            pm2)
+              pm2 start $origin/brain/stem.js --name "$originDirName"
+              pm2 logs $originDirName
+            ;;
+            fig)
+              cd $origin
+              fig start $COMMANDS_DOCKER_SERVICE
+              fig logs $COMMANDS_DOCKER_SERVICE
+            ;;
+          esac
         ;;
         once)
-          node $origin/brain/stem.js
+          case "$COMMANDS_DAEMONIZER" in
+            fig)
+              cd $origin
+              fig up $COMMANDS_DOCKER_SERVICE
+            ;;
+            *)
+              node $origin/brain/stem.js
+            ;;
+          esac
         ;;
         *)
-          $COMMANDS_DAEMONIZER start $origin/brain/stem.js --name "$originDirName"
+          case "$COMMANDS_DAEMONIZER" in
+            fig)
+              cd $origin
+              fig start $COMMANDS_DOCKER_SERVICE
+            ;;
+            pm2)
+              $COMMANDS_DAEMONIZER start $origin/brain/stem.js --name "$originDirName"
+            ;;
+          esac
         ;;
       esac
     ;;
     restart)
-      $COMMANDS_DAEMONIZER restart $originDirName
+      case "$COMMANDS_DAEMONIZER" in
+        fig)
+          cd $origin
+          fig stop $COMMANDS_DOCKER_SERVICE
+          fig start $COMMANDS_DOCKER_SERVICE
+        ;;
+        pm2)
+          $COMMANDS_DAEMONIZER restart $originDirName
+        ;;
+      esac
     ;;
     stop)
-      $COMMANDS_DAEMONIZER stop $originDirName
+      case "$COMMANDS_DAEMONIZER" in
+        fig)
+          cd $origin
+          fig stop $COMMANDS_DOCKER_SERVICE
+        ;;
+        pm2)
+          $COMMANDS_DAEMONIZER stop $originDirName
+        ;;
+      esac
     ;;
     kill)
-      $COMMANDS_DAEMONIZER delete $originDirName
+      case "$COMMANDS_DAEMONIZER" in
+        fig)
+          cd $origin
+          fig kill $COMMANDS_DOCKER_SERVICE
+        ;;
+        pm2)
+          $COMMANDS_DAEMONIZER delete $originDirName
+        ;;
+      esac
     ;;
     memory)
-      $COMMANDS_DAEMONIZER logs $originDirName
+      case "$COMMANDS_DAEMONIZER" in
+        fig)
+          cd $origin
+          fig logs $COMMANDS_DOCKER_SERVICE
+        ;;
+        pm2)
+          $COMMANDS_DAEMONIZER logs $originDirName
+        ;;
+      esac
     ;;
     *)
       state error "The command '$1' is not supported. Use help, -h, or --help for a list of commands."
