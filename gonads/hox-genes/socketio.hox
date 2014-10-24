@@ -1,43 +1,55 @@
 // vi:syntax=javascript
 
-var CEREBELLUM = require('../../brain/cerebellum.js');
-var self;
+;(function() {
+  'use strict';
 
-module.exports = self = {
-  namespaceIds: [
-    'anatomy1', 'anatomy2'
-  ],
-  events: {
-    'connection': function(socket) {
-      CEREBELLUM.log.print(socket.id, 'socketio connect');
+  var CEREBELLUM = require('../../brain/cerebellum.js');
+
+  var self;
+  module.exports = self = {
+    namespaceIds: [
+      ''
+    ],
+    events: {
+      'connection': function(socket) {
+        CEREBELLUM.log.print(socket.id, 'socketio connect');
+      },
+      'disconnect': function(socket) {
+        CEREBELLUM.log.print(socket.id, 'socketio disconnect');
+      }
     },
-    'disconnect': function(socket) {
-      CEREBELLUM.log.print(socket.id, 'socketio disconnect');
-    }
-  },
-  io: null,
-  configure: function(io, namespaces) {
-    var self = this;
+    io: null,
+    sessions: null,
+    configure: function(parameters) {
+      var self = this;
 
-    this.io = io;
+      this.io = parameters.io;
+      this.sessions = parameters.sessions;
 
-    for (var i = 0; i < this.namespaceIds.length; i ++) {
-      var namespaceId = this.namespaceIds[i];
-      var namespace = '/' + namespaceId;
-      namespaces[namespace] = io.of(namespace);
-      namespaces[namespace].on('connection', function(socket) {
+      var socketHandler = function socketHandler(socket, namespace, namespaceId) {
+        var eventHandler = function eventHandler(socket, event, callback) {
+          socket.on(event, function(data, next) {
+            callback(socket, data, namespace, namespaceId, next);
+          });
+        };
+
         self.events.connection(socket);
 
         for (var event in self.events) {
           if (event !== 'connection') {
-            (function(socket, event, callback) {
-              socket.on(event, function(data, next) {
-                callback(socket, data, namespaces[namespace], next);
-              });
-            })(socket, event, self.events[event]);
+            eventHandler(socket, event, self.events[event]);
           }
         }
-      });
+      };
+
+      for (var i = 0; i < this.namespaceIds.length; i ++) {
+        var namespaceId = this.namespaceIds[i];
+        var namespace = '/' + namespaceId;
+        parameters.namespaces[namespace] = self.io.of(namespace);
+        parameters.namespaces[namespace].on('connection', function(socket) {
+          socketHandler(socket, parameters.namespaces[namespace], namespaceId);
+        });
+      }
     }
-  }
-};
+  };
+})();

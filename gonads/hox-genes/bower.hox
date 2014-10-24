@@ -1,0 +1,22 @@
+{
+  "name": "anatomy",
+  "version": "0.1.0",
+  "homepage": "https://github.com/suitupalex/anatomy",
+  "authors": [
+    "Help.com"
+  ],
+  "description": "Boilerplate code for an Anatomy web app.",
+  "main": "brain/stem.js",
+  "license": "MIT",
+  "private": false,
+  "ignore": [
+    "**./.*",
+    "node_modules",
+    "bower_componenets",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation": "~5.4.6"
+  }
+}

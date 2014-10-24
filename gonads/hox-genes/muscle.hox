@@ -1,0 +1,10 @@
+// vi:syntax=javascript
+
+;(function() {
+  'use strict';
+
+  module.exports = {
+    animationTime: 500,
+    fontSize: 16
+  };
+})();

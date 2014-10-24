@@ -160,7 +160,7 @@ if [ "$1" == '-l' ]; then
     state info 'Starting Anatomy generator.'
   fi
 elif [ "$1" == '-v' ] || [ "$1" == '--version' ]; then
-  state info 'Anatomy v1.0.0'
+  state info 'Anatomy v0.0.7'
   exit 0
 else
   findOrigin
@@ -422,6 +422,32 @@ else
   auto=0
 fi
 
+if ( [ $auto -eq 0 ] && ask 'Create anatomy boilerplate? This will run a default anatomy setup.' ); then
+  auto=1
+  AUTO_FOLDERS=1
+  AUTO_EDITOR=vim
+  AUTO_JAVASCRIPT_PREPROCESSOR=none
+  AUTO_TEMPLATE_LANGUAGE=jade
+  AUTO_CSS_PREPROCESSOR=sass
+  AUTO_FRONT_END_FRAMEWORK=ampersand
+  AUTO_DATABASE=none
+  AUTO_CACHE_DATABASE=none
+  AUTO_ORM=none
+  AUTO_BUILD_TOOL=gulp
+  AUTO_CLIENT_BUILD_TOOL=bower
+  AUTO_DAEMONIZER=pm2
+  AUTO_BACK_END_FRAMEWORK=express
+  AUTO_WEBSOCKET_ENGINE=socket.io
+  AUTO_LIBRARY=jquery
+  AUTO_ANIMATION_ENGINE=jqueryui
+  AUTO_BUNDLER=browserify
+  AUTO_CSS_FRAMEWORK=none
+  AUTO_PASSPORT=0
+  AUTO_STICKY_SESSION=0
+  AUTO_COLORS=1
+  AUTO_BOILERPLATE=1
+fi
+
 if ( [ $auto -eq 1 ] && [ $AUTO_FOLDERS -eq 1 ] ) || ( [ $auto -eq 0 ] && ask 'Create anatomy folder structure?' ); then
   if [ ! -d 'brain' ]; then
     state info 'Spawning brain.'
@@ -500,10 +526,11 @@ if [ $auto -eq 0 ]; then
 fi
 COMMANDS_EDITOR=$AUTO_EDITOR
 
-if [ $auto -eq 0 ]; then
-  askOptions 'What JavaScript preprocessor would you like to use?' 'coffeescript'
-  AUTO_JAVASCRIPT_PREPROCESSOR="$LAST_ANSWER"
-fi
+AUTO_JAVASCRIPT_PREPROCESSOR='none'
+#if [ $auto -eq 0 ]; then
+#  askOptions 'What JavaScript preprocessor would you like to use?' 'coffeescript'
+#  AUTO_JAVASCRIPT_PREPROCESSOR="$LAST_ANSWER"
+#fi
 
 case "$AUTO_JAVASCRIPT_PREPROCESSOR" in
   none)
@@ -513,7 +540,7 @@ case "$AUTO_JAVASCRIPT_PREPROCESSOR" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What templating language would you like to use?' 'jade' 'ejs' 'handlebars'
+  askOptions 'What templating language would you like to use?' 'jade' # 'ejs' 'handlebars'
   AUTO_TEMPLATE_LANGUAGE="$LAST_ANSWER"
 fi
 
@@ -528,7 +555,7 @@ case "$AUTO_TEMPLATE_LANGUAGE" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What CSS preprocessor would you like to use?' 'sass' 'scss' 'less'
+  askOptions 'What CSS preprocessor would you like to use?' 'sass' # 'scss' 'less'
   AUTO_CSS_PREPROCESSOR="$LAST_ANSWER"
 fi
 
@@ -539,7 +566,7 @@ case "$AUTO_CSS_PREPROCESSOR" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What front-end framework would you like to use?' 'ampersand' 'backbone' 'angular' 'ember'
+  askOptions 'What front-end framework would you like to use?' 'ampersand' # 'backbone' 'angular' 'ember'
   AUTO_FRONT_END_FRAMEWORK="$LAST_ANSWER"
 fi
 
@@ -552,7 +579,7 @@ case "$AUTO_FRONT_END_FRAMEWORK" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What database would you like to use?' 'postgresql' 'mongodb' 'mysql' 'sqlite3'
+  askOptions 'What database would you like to use?' 'postgresql' # 'mongodb' 'mysql' 'sqlite3'
   AUTO_DATABASE="$LAST_ANSWER"
 fi
 
@@ -565,7 +592,7 @@ case "$AUTO_DATABASE" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What caching database would you like to use?' 'redis' 'memcached' 'cassandra' 'couchdb'
+  askOptions 'What caching database would you like to use?' 'redis' # 'memcached' 'cassandra' 'couchdb'
   AUTO_CACHE_DATABASE="$LAST_ANSWER"
 fi
 
@@ -578,7 +605,7 @@ case "$AUTO_CACHE_DATABASE" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What object relational mapping (ORM) would you like to use?' 'bookshelf' 'sequalize' 'mongoose'
+  askOptions 'What object relational mapping (ORM) would you like to use?' 'bookshelf' # 'sequalize' 'mongoose'
   AUTO_ORM="$LAST_ANSWER"
 fi
 
@@ -591,7 +618,7 @@ case "$AUTO_ORM" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What build tool would you like to use?' 'gulp' 'grunt' 'bower'
+  askOptions 'What build tool would you like to use?' 'gulp' # 'grunt' 'bower'
   AUTO_BUILD_TOOL="$LAST_ANSWER"
 fi
 
@@ -606,7 +633,20 @@ case "$AUTO_BUILD_TOOL" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What daemonizer would you like to use?' 'pm2' 'forever' 'nodemon'
+  askOptions 'What client-side build tool would you like to use?' 'bower'
+  AUTO_BUILD_TOOL="$LAST_ANSWER"
+fi
+
+case "$AUTO_CLIENT_BUILD_TOOL" in
+  bower)
+    state info 'Installing bower module and plugins.'
+    npm install bower gulp-bower
+    check $? 'install' 'installed' 'bower module and plugins'
+  ;;
+esac
+
+if [ $auto -eq 0 ]; then
+  askOptions 'What daemonizer would you like to use?' 'pm2' # 'forever' 'nodemon'
   AUTO_DAEMONIZER="$LAST_ANSWER"
 fi
 
@@ -617,7 +657,7 @@ case "$AUTO_DAEMONIZER" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What back-end framework would you like to use?' 'express' 'hapi' 'connect'
+  askOptions 'What back-end framework would you like to use?' 'express' # 'hapi' 'connect'
   AUTO_BACK_END_FRAMEWORK="$LAST_ANSWER"
 fi
 
@@ -630,14 +670,14 @@ case "$AUTO_BACK_END_FRAMEWORK" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What websocket engine would you like to use?' 'socket.io' 'sockjs'
+  askOptions 'What websocket engine would you like to use?' 'socket.io' # 'sockjs'
   AUTO_WEBSOCKET_ENGINE="$LAST_ANSWER"
 fi
 
 case "$AUTO_WEBSOCKET_ENGINE" in
   socket.io)
     state info 'Installing socket.io module and plugins.'
-    npm install socket.io socket.io-redis
+    npm install socket.io socket.io-redis socket.io-client
     check $? 'install' 'installed' 'socket.io module and plugins'
   ;;
 esac
@@ -694,7 +734,7 @@ case "$AUTO_BUNDLER" in
 esac
 
 if [ $auto -eq 0 ]; then
-  askOptions 'What CSS framework would you like to use?' 'foundation' 'bootstrap'
+  askOptions 'What CSS framework would you like to use?' 'foundation' # 'bootstrap'
   AUTO_CSS_FRAMEWORK="$LAST_ANSWER"
 fi
 
@@ -768,54 +808,19 @@ fi
 if ( [ $auto -eq 1 ] && [ $AUTO_BOILERPLATE -eq 1 ] ) || ( [ $auto -eq 0 ] && ask 'Create boilerplate code?' ); then
   cd $SCRIPT_BIN_DIR
 
-  state info 'Copying brain/stem.js boilerplate.'
-  cp brain/stem.js $origin/brain
-  check $? 'copy' 'copied' 'brain/stem.js boilerplate'
-
-  state info 'Copying brain/cerebellum.js boilerplate.'
-  cp brain/cerebellum.js $origin/brain 
-  check $? 'copy' 'copied' 'brain/cerebellum.js boilerplate'
-
-  state info 'Copying muscle/skeletal.js boilerplate.'
-  cp muscle/skeletal.js $origin/muscle 
-  check $? 'copy' 'copied' 'brain/skeletal.js boilerplate'
-
-  state info 'Copying skeleton/spine.jade boilerplate.'
-  cp skeleton/spine.jade $origin/skeleton 
-  check $? 'copy' 'copied' 'skeleton/spine.jade boilerplate'
-
-  state info 'Copying skin/epidermis.sass boilerplate.'
-  cp skin/epidermis.sass $origin/skin 
-  check $? 'copy' 'copied' 'skin/epidermis.sass boilerplate'
-
-  state info 'Copying gonads/hox-genes/brain.hox boilerplate.'
-  cp gonads/hox-genes/brain.hox $origin/gonads/hox-genes 
-  check $? 'copy' 'copied' 'gonads/hox-genes/brain.hox boilerplate'
-
-  state info 'Copying gonads/hox-genes/express.hox boilerplate.'
-  cp gonads/hox-genes/express.hox $origin/gonads/hox-genes 
-  check $? 'copy' 'copied' 'gonads/hox-genes/express.hox boilerplate'
-
-  state info 'Copying gonads/hox-genes/knex.hox boilerplate.'
-  cp gonads/hox-genes/knex.hox $origin/gonads/hox-genes 
-  check $? 'copy' 'copied' 'gonads/hox-genes/knex.hox boilerplate'
-
-  state info 'Copying gonads/hox-genes/passport.hox boilerplate.'
-  cp gonads/hox-genes/passport.hox $origin/gonads/hox-genes 
-  check $? 'copy' 'copied' 'gonads/hox-genes/passport.hox boilerplate'
-
-  state info 'Copying gonads/hox-genes/socketio.hox boilerplate.'
-  cp gonads/hox-genes/socketio.hox $origin/gonads/hox-genes 
-  check $? 'copy' 'copied' 'gonads/hox-genes/socketio.hox boilerplate'
-
-  state info 'Copying gonads/hox-genes/gulp.hox boilerplate.'
-  cp gonads/hox-genes/gulp.hox $origin/gonads/hox-genes 
-  check $? 'copy' 'copied' 'gonads/hox-genes/gulp.hox boilerplate'
+  state info 'Copying boilerplate files.'
+  rsync -r . $origin --exclude anatomy.sh
+  check $? 'copy' 'copied' 'boilerplate files'
 
   cd $origin
   state info 'Linking gulp.hox to gulpfile.js.'
   ln -s gonads/hox-genes/gulp.hox gulpfile.js
   check $? 'link' 'linked' 'gulp.hox to gulpfile.js'
+
+  cd $origin
+  state info 'Linking bower.hox to bower.json.'
+  ln -s gonads/hox-genes/bower.hox bower.json
+  check $? 'link' 'linked' 'bower.hox to bower.json'
 
   AUTO_BOILERPLATE=1
 else
@@ -870,6 +875,7 @@ if [ $auto -eq 0 ]; then
   state info "Cache Database:               $(greenify $AUTO_CACHE_DATABASE)"
   state info "ORM:                          $(greenify $AUTO_ORM)"
   state info "Build Tool:                   $(greenify $AUTO_BUILD_TOOL)"
+  state info "Client-Side Build Tool:       $(greenify $AUTO_CLIENT_BUILD_TOOL)"
   state info "Daemonizer:                   $(greenify $AUTO_DAEMONIZER)"
   state info "Back-end Framework:           $(greenify $AUTO_BACK_END_FRAMEWORK)"
   state info "Websocket Engine:             $(greenify $AUTO_WEBSOCKET_ENGINE)"
@@ -879,8 +885,8 @@ if [ $auto -eq 0 ]; then
   state info "CSS Framework:                $(greenify $AUTO_CSS_FRAMEWORK)"
   state info "Passport.js:                  $(binaryWord $AUTO_PASSPORT)"
   state info "Sticky Sessions:              $(binaryWord $AUTO_STICKY_SESSION)"
-  state info "Boilerplate:                  $(binaryWord $AUTO_BOILERPLATE)"
   state info "Colors:                       $(binaryWord $AUTO_COLORS)"
+  state info "Boilerplate:                  $(binaryWord $AUTO_BOILERPLATE)"
   echo
   if ask 'Would you like to save this configuration as generator.hox?'; then
     cd $origin/gonads/hox-genes
@@ -907,6 +913,7 @@ if [ $auto -eq 0 ]; then
       autoHoxAppend "AUTO_CACHE_DATABASE=$AUTO_CACHE_DATABASE # Set a caching database."
       autoHoxAppend "AUTO_ORM=$AUTO_ORM # Set an ORM."
       autoHoxAppend "AUTO_BUILD_TOOL=$AUTO_BUILD_TOOL # Set a build tool."
+      autoHoxAppend "AUTO_CLIENT_BUILD_TOOL=$AUTO_CLIENT_BUILD_TOOL # Set a client build tool."
       autoHoxAppend "AUTO_DAEMONIZER=$AUTO_DAEMONIZER # Set a daemonizer."
       autoHoxAppend "AUTO_BACK_END_FRAMEWORK=$AUTO_BACK_END_FRAMEWORK # Set a back-end framework."
       autoHoxAppend "AUTO_WEBSOCKET_ENGINE=$AUTO_WEBSOCKET_ENGINE # Set a websocket engine."
@@ -916,8 +923,8 @@ if [ $auto -eq 0 ]; then
       autoHoxAppend "AUTO_CSS_FRAMEWORK=$AUTO_CSS_FRAMEWORK # Set a CSS framework."
       autoHoxAppend "AUTO_PASSPORT=$AUTO_PASSPORT # Use Passport.js for authentication."
       autoHoxAppend "AUTO_STICKY_SESSION=$AUTO_STICKY_SESSION # Use sticky sessions."
-      autoHoxAppend "AUTO_BOILERPLATE=$AUTO_BOILERPLATE # Copy boilerplate code."
       autoHoxAppend "AUTO_COLORS=$AUTO_COLORS # Use colors logging module."
+      autoHoxAppend "AUTO_BOILERPLATE=$AUTO_BOILERPLATE # Copy boilerplate code."
     }
     check $? 'save' 'saved' 'current configration as generator.hox'
   else

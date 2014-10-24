@@ -1,10 +1,17 @@
 doctype html
 html(lang='en')
   head
-    title Anatomy
+    title Dashboard
     link(rel='stylesheet', href='/skin/dermis/normalize.css')
-    link(rel='stylesheet', href='/skin/dermis/foundation.min.css')
+    link(rel='stylesheet', href='/skin/dermis/foundation.css')
     link(rel='stylesheet', href='/skin/dermis/epidermis.css')
   body
-    h1 Anatomy
-    p Thanks for using Anatomy!
+    section#welcome
+      h1#anatomy-logo Anatomy
+      form
+        .row
+          input(type='text', placeholder='What\'s your name?', name='name', required)
+        .row
+          input(type='submit', value='Go!').button
+      h4#greeting
+    script(src='/muscle/skeletal.bundle.js')

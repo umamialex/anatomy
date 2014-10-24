@@ -1,21 +1,22 @@
-(function() {
-  var cluster = require('cluster');
+;(function() {
+  'use strict';
+
   var colors = require('colors');
   var path = require('path');
+
+  var inBrowser = typeof window !== 'undefined';
 
   var c;
   var cerebellum = c = {
     directories: {
-        root: path.dirname(__dirname),
+      root: path.dirname(__dirname),
       skeleton: path.dirname(__dirname) + '/skeleton',
-        skin: path.dirname(__dirname) + '/skin',
-        muscle: path.dirname(__dirname) + '/muscle',
-         voice: path.dirname(__dirname) + '/voice'
+      skin: path.dirname(__dirname) + '/skin',
+      muscle: path.dirname(__dirname) + '/muscle',
+      voice: path.dirname(__dirname) + '/voice'
     },
     log: {
-      print: function(options, event, overwrite) {
-        overwrite = typeof overwrite !== 'boolean' ? false : overwrite;
-
+      print: function(options, event) {
         var time = new Date();
         var timestamp = time.getFullYear() +
           '-' + c.format(time.getMonth() + 1, 2) +
@@ -25,18 +26,20 @@
           ':' + c.format(time.getSeconds(), 2) +
           '.' + c.format(time.getMilliseconds(), 3);
 
-        var clusterId = null;
-        if (cluster.isMaster) {
-          clusterId = 'M**'.red.inverse + ' : ';
-        } else {
-          var prefix = 'W#' + cluster.worker.id;
-          switch (cluster.worker.id) {
-            case 1: prefix = prefix.green; break;
-            case 2: prefix = prefix.blue; break;
-            case 3: prefix = prefix.magenta; break;
-            case 4: prefix = prefix.yellow; break;
+        var browserStyles = [];
+        Object.defineProperty(browserStyles, 'addStyle', {
+          value: function(style) {
+            this.push(style);
+            this.push('background: transparent; color: inhert');
           }
-          clusterId = prefix.inverse + ' : ';
+        });
+
+        var clusterId = null;
+        if (inBrowser) {
+          clusterId = '%cBROWSER%c : ';
+          browserStyles.addStyle('background: #f00; color: #fff');
+        } else {
+          clusterId = 'SERVER'.red.inverse + ' : ';
         }
 
         var e = c.log.events;
@@ -58,15 +61,29 @@
 
           // Socket.io
           case e.socketio.connect:
-            text = 'socket.io'.toUpperCase().inverse + ' connection by ' + options.toString().magenta.inverse + '.';
+            if (inBrowser) {
+              text = '%cSOCKET.IO%c connection by %c' + options.toString() + '%c.';
+              browserStyles.addStyle('background: #000; color: #fff');
+              browserStyles.addStyle('background: #f0f; color: #fff');
+            } else {
+              text = 'SOCKET.IO'.inverse + ' connection by ' + options.toString().magenta.inverse + '.';
+            }
           break;
           case e.socketio.disconnect:
-            text = 'socket.io'.toUpperCase().inverse + ' disconnect by ' + options.toString().magenta.inverse + '.';
+            if (inBrowser) {
+              text = '%cSOCKET.IO%c disconnect by %c' + options.toString() + '%c.';
+              browserStyles.addStyle('background: #000; color: #fff');
+              browserStyles.addStyle('background: #f0f; color: #fff');
+            } else {
+              text = 'SOCKET.IO'.inverse + ' disconnect by ' + options.toString().magenta.inverse + '.';
+            }
           break;
         }
 
         var out = clusterId + text;
-        if (overwrite) {
+        if (inBrowser) {
+          browserStyles.unshift(timestamp + ' ' + out);
+          console.log.apply(console, browserStyles);
         } else {
           console.log(timestamp + ' ' + out);
         }
@@ -80,20 +97,13 @@
         },
         socketio: {
           connect: 'socketio connect',
-          disconnect: 'socketio disconnect',
-          event: 'socketio event',
-          error: 'socketio error'
+          disconnect: 'socketio disconnect'
         }
       }
     },
     format: function(n, place) {
       n = n.toString();
       return n.length >= place ? n : new Array(place - n.length + 1).join('0') + n;
-    },
-    makeUrlSafe: function(url) {
-      return url.toLowerCase().replace(/ /g, '-')
-                  .replace(/\(/g, '')
-                  .replace(/\)/g, '');
     }
   };
 

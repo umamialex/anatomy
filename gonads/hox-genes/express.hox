@@ -1,69 +1,71 @@
 // vi:syntax=javascript
 
-var CEREBELLUM = require('../../brain/cerebellum.js');
-var self;
+;(function() {
+  'use strict';
 
-module.exports = self = {
-  engine: 'jade',
-  port: 8080,
-  routes: {
-    '/': function(request, response) {
-      response.render('spine');
-    }
-  },
-  passport: null,
-  configure: function(parameters) {
-    var app = parameters.app;
-    var express = parameters.express;
-    var cookieParser = require('cookie-parser');
-    var bodyParser = require('body-parser');
-    var session = require('express-session');
-    var passport = this.passport = parameters.passport;
+  var CEREBELLUM = require('../../brain/cerebellum.js');
 
-    app.locals.basedir = CEREBELLUM.directories.root;
+  var self;
+  module.exports = self = {
+    engine: 'jade',
+    port: 8080,
+    routes: {
+      '*': function(request, response) {
+        response.render('spine');
+      }
+    },
+    passport: null,
+    sessions: null,
+    configure: function(parameters) {
+      var app = parameters.app;
+      var express = parameters.express;
+      var cookieParser = require('cookie-parser');
+      var bodyParser = require('body-parser');
+      var session = require('express-session');
 
-    app.use('/skin', express.static(CEREBELLUM.directories.skin));
-    app.use('/muscle', express.static(CEREBELLUM.directories.muscle));
-    app.use('/voice', express.static(CEREBELLUM.directories.voice));
+      this.sessions = parameters.sessions;
 
-    app.set('views', CEREBELLUM.directories.skeleton);
-    app.set('view engine', this.engine);
+      app.locals.basedir = CEREBELLUM.directories.root;
 
-    app.use(cookieParser());
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
+      app.use('/skin', express.static(CEREBELLUM.directories.skin));
+      app.use('/muscle', express.static(CEREBELLUM.directories.muscle));
+      app.use('/voice', express.static(CEREBELLUM.directories.voice));
 
-    app.use(session({
-      secret: 'thisismysecret',
-      resave: true,
-      saveUninitialized: true
-    }));
-    app.use(passport.initialize());
-    app.use(passport.session());
+      app.set('views', CEREBELLUM.directories.skeleton);
+      app.set('view engine', this.engine);
 
-    for (var route in this.routes) {
-      if (typeof this.routes[route] === 'function') {
-        app.all(route, this.routes[route]);
-      } else {
-        for (var type in this.routes[route]) {
-          var middleware, execute;
-          if (typeof this.routes[route][type] === 'function') {
-            middleware = function(request, response, next) { next(); };
-            execute = this.routes[route][type];
-          } else {
-            middleware = this.routes[route][type].middleware;
-            execute = this.routes[route][type].execute;
+      app.use(cookieParser());
+      app.use(bodyParser.json());
+      app.use(bodyParser.urlencoded({ extended: true }));
+
+      app.use(session({
+        secret: 'somesecrethere',
+        resave: true,
+        saveUninitialized: true
+      }));
+
+      var emptyMiddleware = function(request, response, next) { next(); };
+      var routeKeys = Object.keys(this.routes);
+      for (var i = 0; i < routeKeys.length; i ++) {
+        var route = routeKeys[i];
+        if (typeof this.routes[route] === 'function') {
+          app.all(route, this.routes[route]);
+        } else {
+          var typeKeys = Object.keys(this.routes[route]);
+          for (var j = 0; j < typeKeys.length; j ++) {
+            var type = typeKeys[j];
+            var middleware, execute;
+            if (typeof this.routes[route][type] === 'function') {
+              middleware = emptyMiddleware;
+              execute = this.routes[route][type];
+            } else {
+              middleware = this.routes[route][type].middleware;
+              execute = this.routes[route][type].execute;
+            }
+            app[type](route, middleware, execute);
           }
-          app[type](route, middleware, execute);
         }
       }
     }
-  },
-  isLoggedIn: function(request, response, next) {
-    if (request.isAuthenticated()) {
-      return next();
-    }
-
-    // Redirect to login page.
-  }
-};
+  };
+})();

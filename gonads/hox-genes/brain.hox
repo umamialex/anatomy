@@ -1,8 +1,13 @@
 // vi:syntax=javascript
 
-module.exports = {
-  knex: require('./knex.hox'),
-  express: require('./express.hox'),
-  socketio: require('./socketio.hox'),
-  passport: require('./passport.hox')
-};
+;(function() {
+  'use strict';
+
+  var url = require('url');
+
+  module.exports = {
+    express: require('./express.hox'),
+    socketio: require('./socketio.hox'),
+    saltEntropy: 8
+  };
+})();

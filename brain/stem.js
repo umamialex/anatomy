@@ -1,41 +1,34 @@
-var CEREBELLUM = require('./cerebellum.js');
-var HOX = require('../gonads/hox-genes/brain.hox');
+;(function() {
+  'use strict';
 
-var fs = require('fs');
-var express = require('express');
-var passport = require('passport');
-var sticky = require('sticky-session');
+  var CEREBELLUM = require('./cerebellum.js');
+  var HOX = require('../gonads/hox-genes/brain.hox');
 
-CEREBELLUM.log.print([ 'fs', 'express', 'passport', 'sticky-session' ], 'module load');
-
-var app = express();
-
-sticky(function() {
   var http = require('http');
+  var express = require('express');
+  var app = express();
   var server = http.createServer(app);
-  var bcrypt = require('bcrypt-nodejs');
-  var io = require('socket.io')(server);
-  var socketIoRedis = require('socket.io-redis');
-  var redis = require('redis').createClient();
 
-  var knex = require('knex')(HOX.knex);
-  var bookshelf = require('bookshelf')(knex);
-  HOX.passport.configure({
-    passport: passport,
-    bookshelf: bookshelf
-  });
+  var sessions = {};
+  var namespaces = {};
+
+  CEREBELLUM.log.print([ 'cerebellum', 'hox/brain', 'express', 'cerebrum/user' ], 'module load');
 
   HOX.express.configure({
     express: express,
     app: app,
-    passport: passport
+    sessions: sessions
   });
 
-  var namespaces = {};
-  io.adapter(socketIoRedis());
-  HOX.socketio.configure(io, namespaces);
+  var io = require('socket.io')(server);
 
-  return server;
-}).listen(HOX.express.port, function() {
+  HOX.socketio.configure({
+    io: io,
+    namespaces: namespaces,
+    sessions: sessions
+  });
+
+  server.listen(HOX.express.port);
+
   CEREBELLUM.log.print({ module: 'express', port: HOX.express.port }, 'module listen');
-});
+})();
