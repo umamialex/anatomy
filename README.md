@@ -43,28 +43,3 @@ Anatomy also provides a strong opinion about structuring your web apps. Every go
 On top of that, when programmers create their directory hierarchy, they use boring, nondescript terms like **views**, **lib**, **models**, **public**, and **static**. They call their files more vague things like **app.js**, **index.html**, **stylesheet.css**, **utils.js**.
 
 We can be more creative than that and come up with something more descriptive and more relatable. Maybe come up with something even non-programmers can understand. Why not use something we all know and love as a metaphor, **the human body.**
-
-## Configuration
-## Structure
-### reproduce.sh
-
-### gonads/
-#### gametes/
-#### chromosomes/
-#### hox-genes/
-#####anatomy.hox
-#####apf.hox
-#####preroute.hox
-#####vim.hox
-#####bashrc.hox
-### skeleton/
-#### spine.jade
-### muscle/
-#### skeletal.js
-#### visceral/
-### skin/
-#### epidermis.sass
-#### dermis/
-### voice/
-### brain/
-#### cerebellum.js
